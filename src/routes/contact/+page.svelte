@@ -38,7 +38,7 @@
 	<meta name="description" content="Get in touch with Serenity Engine." />
 </svelte:head>
 
-<div class="mx-auto max-w-xl px-6 pt-32 pb-20">
+<div class="px-8 pt-32 pb-20 lg:px-12">
 	<h1 class="mb-4 text-center text-3xl font-light tracking-[0.15em] text-gold-200 uppercase sm:text-4xl">
 		Contact
 	</h1>

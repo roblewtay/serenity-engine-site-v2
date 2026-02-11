@@ -17,7 +17,10 @@
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-steel-500/30 bg-void-200/80 backdrop-blur-md">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		<a href="/" class="text-xs font-medium tracking-[0.25em] text-gold-200 uppercase hover:text-gold-100 transition-colors">
+		<a href="/" class="flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase hover:text-gold-100 transition-colors">
+			<svg class="nav-logo h-4 w-4 text-gold-300" viewBox="0 0 24 24" fill="currentColor">
+				<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+			</svg>
 			Serenity Engine
 		</a>
 
@@ -66,3 +69,15 @@
 		</div>
 	{/if}
 </nav>
+
+<style>
+	.nav-logo {
+		animation: logo-spin 6s linear infinite;
+		filter: drop-shadow(0 0 3px rgba(212, 165, 116, 0.3));
+	}
+
+	@keyframes logo-spin {
+		from { transform: rotateY(0deg); }
+		to { transform: rotateY(360deg); }
+	}
+</style>

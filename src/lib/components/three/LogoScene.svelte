@@ -1,19 +1,23 @@
 <script lang="ts">
-	import { T, useTask, useThrelte } from '@threlte/core';
-	import { useGltf, Environment } from '@threlte/extras';
-	import type { Group, PointLight, PerspectiveCamera, Mesh, MeshStandardMaterial } from 'three';
+	import { T, useTask } from '@threlte/core';
+	import { useGltf, Environment, OrbitControls } from '@threlte/extras';
+	import type { Group, PointLight, Mesh, MeshStandardMaterial } from 'three';
 
 	interface Props {
 		mouseX?: number;
 		mouseY?: number;
+		isHome?: boolean;
 	}
 
-	let { mouseX = 0, mouseY = 0 }: Props = $props();
+	let { mouseX = 0, mouseY = 0, isHome = true }: Props = $props();
 
 	let groupRef: Group | undefined = $state();
-	let cameraRef: PerspectiveCamera | undefined = $state();
 	let pointLightRef: PointLight | undefined = $state();
-	let baseRotation = $state(0);
+
+	// Zoom-out: lerp group scale when leaving home
+	const scaleHome = 1.0;
+	const scaleAway = 0.7;
+	let currentScale = $state(scaleHome);
 
 	// Mouse proximity drives light intensity and emissive
 	const lightIntensityMin = 0.3;
@@ -27,7 +31,6 @@
 
 	const gltf = useGltf('/models/se-logo-simple.glb');
 
-	// Track meshes for emissive updates
 	let meshes: Mesh[] = $state([]);
 
 	$effect(() => {
@@ -48,7 +51,14 @@
 		targetProximity = raw * raw;
 	});
 
-	useTask((delta) => {
+	useTask(() => {
+		// Lerp scale for zoom-out effect
+		const targetScale = isHome ? scaleHome : scaleAway;
+		currentScale += (targetScale - currentScale) * 0.04;
+		if (groupRef) {
+			groupRef.scale.setScalar(currentScale);
+		}
+
 		// Smooth proximity
 		proximity += (targetProximity - proximity) * 0.03;
 
@@ -68,16 +78,20 @@
 				mat.emissiveIntensity = currentEmissive;
 			}
 		});
-
-		// Auto-rotation
-		if (groupRef) {
-			baseRotation += delta * 0.15;
-			groupRef.rotation.y = baseRotation;
-		}
 	});
 </script>
 
-<T.PerspectiveCamera bind:ref={cameraRef} makeDefault position={[0, 0, 5]} fov={40} />
+<T.PerspectiveCamera makeDefault position={[0, 0, 3]} fov={40}>
+	<OrbitControls
+		enableZoom={false}
+		enablePan={false}
+		enableDamping
+		dampingFactor={0.05}
+		rotateSpeed={0.5}
+		autoRotate
+		autoRotateSpeed={0.4}
+	/>
+</T.PerspectiveCamera>
 
 <T.DirectionalLight position={[10, 8, 5]} intensity={0.6} color="#FFF5E6" />
 <T.DirectionalLight position={[-5, 2, -3]} intensity={0.15} color="#E8C17F" />

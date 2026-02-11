@@ -4,6 +4,12 @@
 	import LogoScene from './LogoScene.svelte';
 	import { browser } from '$app/environment';
 
+	interface Props {
+		isHome?: boolean;
+	}
+
+	let { isHome = true }: Props = $props();
+
 	function createRenderer(canvas: HTMLCanvasElement) {
 		return new WebGLRenderer({
 			canvas,
@@ -29,7 +35,7 @@
 >
 	{#if browser}
 		<Canvas {createRenderer}>
-			<LogoScene {mouseX} {mouseY} />
+			<LogoScene {mouseX} {mouseY} {isHome} />
 		</Canvas>
 	{/if}
 </div>

@@ -3,7 +3,7 @@
 	<meta name="description" content="Who we are and what we build at Serenity Engine." />
 </svelte:head>
 
-<div class="mx-auto max-w-3xl px-6 pt-32 pb-20">
+<div class="px-8 pt-32 pb-20 lg:px-12">
 	<h1 class="mb-12 text-center text-3xl font-light tracking-[0.15em] text-gold-200 uppercase sm:text-4xl">
 		About
 	</h1>

@@ -6,7 +6,7 @@
 	<title>{data.post.title} — Serenity Engine</title>
 </svelte:head>
 
-<div class="mx-auto max-w-3xl px-6 pt-32 pb-20">
+<div class="px-8 pt-32 pb-20 lg:px-12">
 	<a href="/updates" class="mb-8 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-300 transition-colors">
 		&larr; All Updates
 	</a>
