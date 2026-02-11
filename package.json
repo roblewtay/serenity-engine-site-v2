@@ -1,0 +1,33 @@
+{
+	"name": "the-site",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"start": "node build/index.js"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-node": "^5.5.2",
+		"@sveltejs/kit": "^2.50.1",
+		"@sveltejs/vite-plugin-svelte": "^6.2.4",
+		"@types/three": "^0.182.0",
+		"svelte": "^5.48.2",
+		"svelte-check": "^4.3.5",
+		"typescript": "^5.9.3",
+		"vite": "^7.3.1"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.18",
+		"@threlte/core": "^8.3.1",
+		"@threlte/extras": "^9.7.1",
+		"marked": "^17.0.1",
+		"resend": "^6.9.1",
+		"tailwindcss": "^4.1.18",
+		"three": "^0.182.0"
+	}
+}
