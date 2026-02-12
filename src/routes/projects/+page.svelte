@@ -2,7 +2,7 @@
 	const projects = [
 		{
 			name: 'The Discipline',
-			description: 'A contemplative digital sanctuary — an immersive space for reflection and practice. Built with real-time 3D, spatial audio, and a unique aesthetic.',
+			description: 'A contemplative digital sanctuary — an immersive space for discussion. challenge. reflection. and practice. Built with real-time 3D, spatial audio, and a unique aesthetic.',
 			url: 'https://thediscipline.org',
 			status: 'Active'
 		}
