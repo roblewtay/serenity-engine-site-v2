@@ -129,7 +129,8 @@
 		const rect = sliderTrackEl.getBoundingClientRect();
 		const ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
 		const maxScroll = scrollContainerEl.scrollWidth - scrollContainerEl.clientWidth;
-		scrollContainerEl.scrollTo({ left: ratio * maxScroll, behavior: 'smooth' });
+		scrollContainerEl.scrollLeft = ratio * maxScroll;
+		scrollProgress = ratio;
 	}
 
 	onMount(() => {
@@ -378,7 +379,6 @@
 		overflow-x: auto;
 		overflow-y: hidden;
 		-webkit-overflow-scrolling: touch;
-		scroll-behavior: smooth;
 		scrollbar-width: none;
 		position: relative;
 	}
@@ -484,7 +484,6 @@
 		left: 0;
 		height: 1px;
 		transform: translateY(-50%);
-		transition: width 0.15s ease-out;
 	}
 
 	.roadmap-slider-thumb {
@@ -494,7 +493,7 @@
 		height: 9px;
 		border: 1px solid var(--color-steel-400);
 		transform: translate(-50%, -50%) rotate(45deg);
-		transition: left 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.roadmap-slider:hover .roadmap-slider-thumb,

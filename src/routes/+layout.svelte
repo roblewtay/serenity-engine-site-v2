@@ -44,6 +44,14 @@
 		}
 
 		function onWheel(e: WheelEvent) {
+			// If over a horizontal scroll container, redirect wheel to horizontal scroll
+			const hScroll = (e.target as HTMLElement).closest('.roadmap-scroll');
+			if (hScroll) {
+				e.preventDefault();
+				(hScroll as HTMLElement).scrollLeft += normalizeDelta(e);
+				return;
+			}
+
 			e.preventDefault();
 			const maxScroll = mainEl.scrollHeight - mainEl.clientHeight;
 			_targetScroll = Math.max(0, Math.min(_targetScroll + normalizeDelta(e), maxScroll));
