@@ -7,9 +7,13 @@
 		mouseX?: number;
 		mouseY?: number;
 		isHome?: boolean;
+		innerWidth?: number;
 	}
 
-	let { mouseX = 0, mouseY = 0, isHome = true }: Props = $props();
+	let { mouseX = 0, mouseY = 0, isHome = true, innerWidth = 1024 }: Props = $props();
+
+	// Push camera back on narrow screens so logo doesn't clip edges
+	let cameraZ = $derived(innerWidth < 640 ? 4.2 : 3);
 
 	let groupRef: Group | undefined = $state();
 	let pointLightRef: PointLight | undefined = $state();
@@ -81,7 +85,7 @@
 	});
 </script>
 
-<T.PerspectiveCamera makeDefault position={[0, 0, 3]} fov={40}>
+<T.PerspectiveCamera makeDefault position={[0, 0, cameraZ]} fov={40}>
 	<OrbitControls
 		enableZoom={false}
 		enablePan={false}

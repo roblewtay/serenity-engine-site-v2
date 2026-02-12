@@ -21,12 +21,15 @@
 
 	let mouseX = $state(0);
 	let mouseY = $state(0);
+	let innerWidth = $state(0);
 
 	function handleMouseMove(event: MouseEvent) {
 		mouseX = (event.clientX / window.innerWidth) * 2 - 1;
 		mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 	}
 </script>
+
+<svelte:window bind:innerWidth />
 
 <div
 	class="absolute inset-0 h-full w-full"
@@ -35,7 +38,7 @@
 >
 	{#if browser}
 		<Canvas {createRenderer}>
-			<LogoScene {mouseX} {mouseY} {isHome} />
+			<LogoScene {mouseX} {mouseY} {isHome} {innerWidth} />
 		</Canvas>
 	{/if}
 </div>
