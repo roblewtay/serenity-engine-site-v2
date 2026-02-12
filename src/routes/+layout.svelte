@@ -22,10 +22,15 @@
 	let logoEl: HTMLElement;
 	let mainEl: HTMLElement;
 
-	// Smooth scroll state
+	// Smooth scroll state — main (vertical)
 	let _targetScroll = 0;
 	let _isLerping = false;
 	let scrollProgress = $state(0);
+
+	// Smooth scroll state — horizontal containers (roadmap etc.)
+	let _hScrollEl: HTMLElement | null = null;
+	let _hTarget = 0;
+	let _hIsLerping = false;
 
 	function updateProgress() {
 		if (!mainEl) return;
@@ -43,12 +48,38 @@
 			return e.deltaY;
 		}
 
+		function hLerp() {
+			if (!_hScrollEl || _hScrollEl.hasAttribute('data-dragging')) {
+				_hIsLerping = false;
+				return;
+			}
+			const diff = _hTarget - _hScrollEl.scrollLeft;
+			if (Math.abs(diff) < 0.5) {
+				_hScrollEl.scrollLeft = _hTarget;
+				_hIsLerping = false;
+				return;
+			}
+			_hScrollEl.scrollLeft += diff * 0.14;
+			requestAnimationFrame(hLerp);
+		}
+
 		function onWheel(e: WheelEvent) {
-			// If over a horizontal scroll container, redirect wheel to horizontal scroll
+			// If over a horizontal scroll container, smooth-scroll it horizontally
 			const hScroll = (e.target as HTMLElement).closest('.roadmap-scroll');
 			if (hScroll) {
 				e.preventDefault();
-				(hScroll as HTMLElement).scrollLeft += normalizeDelta(e);
+				const el = hScroll as HTMLElement;
+				// Sync target from actual position when not already lerping (e.g. after slider drag)
+				if (_hScrollEl !== el || !_hIsLerping) {
+					_hScrollEl = el;
+					_hTarget = el.scrollLeft;
+				}
+				const maxH = el.scrollWidth - el.clientWidth;
+				_hTarget = Math.max(0, Math.min(_hTarget + normalizeDelta(e), maxH));
+				if (!_hIsLerping) {
+					_hIsLerping = true;
+					hLerp();
+				}
 				return;
 			}
 

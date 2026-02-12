@@ -111,6 +111,7 @@
 
 	function onSliderDown(e: PointerEvent) {
 		isDragging = true;
+		if (scrollContainerEl) scrollContainerEl.dataset.dragging = '';
 		(e.target as HTMLElement).setPointerCapture(e.pointerId);
 		seekToPointer(e);
 	}
@@ -122,6 +123,7 @@
 
 	function onSliderUp() {
 		isDragging = false;
+		if (scrollContainerEl) delete scrollContainerEl.dataset.dragging;
 	}
 
 	function seekToPointer(e: PointerEvent) {
@@ -419,7 +421,7 @@
 	/* Marker on the track */
 	.roadmap-marker {
 		position: absolute;
-		top: 0;
+		top: 2px;
 		left: 0;
 		width: 17px;
 		height: 17px;
