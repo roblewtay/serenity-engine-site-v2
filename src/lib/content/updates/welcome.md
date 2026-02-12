@@ -3,6 +3,8 @@ title: Welcome to Serenity Engine
 date: 2026-02-11
 summary: Our first update — introducing the studio and what we're building.
 slug: welcome
+category: Studio
+tags: announcement, philosophy
 ---
 
 # Welcome to Serenity Engine

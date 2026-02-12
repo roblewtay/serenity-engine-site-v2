@@ -1,48 +1,35 @@
 import type { PageServerLoad } from './$types';
+import { getAllPosts } from '$lib/server/posts';
 
-interface PostMeta {
-	title: string;
-	date: string;
-	summary: string;
-	slug: string;
-}
+const POSTS_PER_PAGE = 6;
 
-function parseFrontmatter(content: string): { meta: Record<string, string>; body: string } {
-	const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-	if (!match) return { meta: {}, body: content };
+export const load: PageServerLoad = async ({ url }) => {
+	const categoryFilter = url.searchParams.get('category') || '';
+	const tagFilter = url.searchParams.get('tag') || '';
+	const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
 
-	const meta: Record<string, string> = {};
-	for (const line of match[1].split('\n')) {
-		const idx = line.indexOf(':');
-		if (idx > 0) {
-			meta[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
-		}
+	let posts = getAllPosts();
+
+	const categories = [...new Set(posts.map((p) => p.category).filter(Boolean))];
+	const tags = [...new Set(posts.flatMap((p) => p.tags))];
+
+	if (categoryFilter) {
+		posts = posts.filter((p) => p.category === categoryFilter);
 	}
-	return { meta, body: match[2] };
-}
-
-export const load: PageServerLoad = async () => {
-	const modules = import.meta.glob('/src/lib/content/updates/*.md', {
-		query: '?raw',
-		import: 'default',
-		eager: true
-	});
-
-	const posts: PostMeta[] = [];
-
-	for (const [, raw] of Object.entries(modules)) {
-		const { meta } = parseFrontmatter(raw as string);
-		if (meta.title && meta.slug) {
-			posts.push({
-				title: meta.title,
-				date: meta.date || '',
-				summary: meta.summary || '',
-				slug: meta.slug
-			});
-		}
+	if (tagFilter) {
+		posts = posts.filter((p) => p.tags.includes(tagFilter));
 	}
 
-	posts.sort((a, b) => (b.date > a.date ? 1 : -1));
+	const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+	const currentPage = Math.min(page, totalPages);
+	const start = (currentPage - 1) * POSTS_PER_PAGE;
+	const paginatedPosts = posts.slice(start, start + POSTS_PER_PAGE);
 
-	return { posts };
+	return {
+		posts: paginatedPosts,
+		categories,
+		tags,
+		pagination: { currentPage, totalPages },
+		activeFilters: { category: categoryFilter, tag: tagFilter }
+	};
 };

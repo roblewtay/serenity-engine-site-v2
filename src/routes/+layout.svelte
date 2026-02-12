@@ -5,9 +5,11 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import SpaceBackground from '$lib/components/SpaceBackground.svelte';
 	import LogoCanvas from '$lib/components/three/LogoCanvas.svelte';
+	import ReadingProgress from '$lib/components/ReadingProgress.svelte';
 
 	let { children } = $props();
 	let isHome = $derived($page.url.pathname === '/');
+	let isArticle = $derived($page.url.pathname.startsWith('/updates/') && $page.url.pathname !== '/updates/');
 </script>
 
 <!-- Starfield — always full viewport -->
@@ -23,6 +25,10 @@
 >
 	<LogoCanvas {isHome} />
 </div>
+
+{#if isArticle}
+	<ReadingProgress />
+{/if}
 
 <!-- Page content -->
 <div

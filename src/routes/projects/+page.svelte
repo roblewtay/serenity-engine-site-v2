@@ -2,7 +2,8 @@
 	const projects = [
 		{
 			name: 'The Discipline',
-			description: 'A contemplative digital sanctuary — an immersive space for discussion, challenge, reflection, and practice. Incorporating a unique aesthic space, spatial audio, and interaction opportunities.',
+			slug: 'the-discipline',
+			description: 'A contemplative digital sanctuary — an immersive space for discussion, challenge, reflection, and practice. Incorporating a unique aesthetic space, spatial audio, and interaction opportunities.',
 			url: 'https://thediscipline.org',
 			status: 'Active'
 		}
@@ -33,14 +34,22 @@
 				<p class="mb-6 text-sm leading-relaxed text-steel-300">
 					{project.description}
 				</p>
-				<a
-					href={project.url}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="inline-block border border-gold-300/40 px-5 py-2 text-xs tracking-[0.15em] text-gold-300 uppercase transition-all hover:border-gold-200 hover:text-gold-200"
-				>
-					Visit &rarr;
-				</a>
+				<div class="flex items-center gap-4">
+					<a
+						href="/projects/{project.slug}"
+						class="inline-block border border-gold-300/40 px-5 py-2 text-xs tracking-[0.15em] text-gold-300 uppercase transition-all hover:border-gold-200 hover:text-gold-200"
+					>
+						Details &rarr;
+					</a>
+					<a
+						href={project.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-block px-5 py-2 text-xs tracking-[0.15em] text-steel-400 uppercase transition-all hover:text-gold-300"
+					>
+						Visit Site &rarr;
+					</a>
+				</div>
 			</article>
 		{/each}
 	</div>
