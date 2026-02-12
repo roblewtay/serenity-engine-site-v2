@@ -7,6 +7,7 @@
 		title: string;
 		description: string;
 		status: 'complete' | 'active' | 'upcoming';
+		highlight?: boolean;
 	}
 
 	const projects: Record<string, {
@@ -81,9 +82,10 @@
 				},
 				{
 					date: '2027',
-					title: 'Open',
+					title: 'Launch',
 					description: 'Public launch. A digital sanctuary, open to all who seek depth.',
-					status: 'upcoming'
+					status: 'upcoming',
+					highlight: true
 				}
 			]
 		}
@@ -95,6 +97,40 @@
 
 	let roadmapVisible = $state(false);
 	let roadmapEl: HTMLElement;
+	let scrollContainerEl: HTMLElement;
+	let scrollProgress = $state(0);
+	let isDragging = $state(false);
+	let sliderTrackEl: HTMLElement;
+
+	function updateScrollProgress() {
+		if (!scrollContainerEl) return;
+		const maxScroll = scrollContainerEl.scrollWidth - scrollContainerEl.clientWidth;
+		if (maxScroll <= 0) { scrollProgress = 1; return; }
+		scrollProgress = Math.min(Math.max(scrollContainerEl.scrollLeft / maxScroll, 0), 1);
+	}
+
+	function onSliderDown(e: PointerEvent) {
+		isDragging = true;
+		(e.target as HTMLElement).setPointerCapture(e.pointerId);
+		seekToPointer(e);
+	}
+
+	function onSliderMove(e: PointerEvent) {
+		if (!isDragging) return;
+		seekToPointer(e);
+	}
+
+	function onSliderUp() {
+		isDragging = false;
+	}
+
+	function seekToPointer(e: PointerEvent) {
+		if (!sliderTrackEl || !scrollContainerEl) return;
+		const rect = sliderTrackEl.getBoundingClientRect();
+		const ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+		const maxScroll = scrollContainerEl.scrollWidth - scrollContainerEl.clientWidth;
+		scrollContainerEl.scrollTo({ left: ratio * maxScroll, behavior: 'smooth' });
+	}
 
 	onMount(() => {
 		if (!roadmapEl) return;
@@ -218,31 +254,64 @@
 					<div class="roadmap-track-fill"></div>
 				</div>
 
-				<!-- Milestones -->
-				<div class="roadmap-items">
-					{#each project.roadmap as milestone, i}
-						<div
-							class="roadmap-item"
-							class:roadmap-item-complete={milestone.status === 'complete'}
-							class:roadmap-item-active={milestone.status === 'active'}
-							style="--delay: {i * 0.15}s;"
-						>
-							<div class="roadmap-marker">
-								<div class="roadmap-marker-dot"></div>
+				<!-- Milestones — horizontal scroll -->
+				<div
+					class="roadmap-scroll"
+					bind:this={scrollContainerEl}
+					onscroll={updateScrollProgress}
+				>
+					<div class="roadmap-items">
+						{#each project.roadmap as milestone, i}
+							<div
+								class="roadmap-item"
+								class:roadmap-item-complete={milestone.status === 'complete'}
+								class:roadmap-item-active={milestone.status === 'active'}
+								class:roadmap-item-highlight={milestone.highlight}
+								style="--delay: {i * 0.15}s;"
+							>
+								<div class="roadmap-marker">
+									<div class="roadmap-marker-dot"></div>
+								</div>
+								<div class="roadmap-content">
+									<span class="block text-[10px] tracking-[0.2em] uppercase mb-1.5 {milestone.highlight ? 'text-gold-warm' : milestone.status === 'complete' ? 'text-steel-400' : milestone.status === 'active' ? 'text-gold-warm' : 'text-steel-500'}">
+										{milestone.date}
+									</span>
+									<h3 class="text-sm font-light tracking-[0.1em] uppercase mb-2 {milestone.highlight ? 'text-gold-warm' : milestone.status === 'complete' ? 'text-steel-300' : milestone.status === 'active' ? 'text-gold-warm' : 'text-gold-200'}">
+										{milestone.title}
+									</h3>
+									<p class="text-xs leading-relaxed font-light {milestone.highlight ? 'text-gold-warm/70' : 'text-steel-400'}">
+										{milestone.description}
+									</p>
+								</div>
 							</div>
-							<div class="roadmap-content">
-								<span class="block text-[10px] tracking-[0.2em] uppercase mb-1.5 {milestone.status === 'complete' ? 'text-steel-400' : milestone.status === 'active' ? 'text-gold-warm' : 'text-steel-500'}">
-									{milestone.date}
-								</span>
-								<h3 class="text-sm font-light tracking-[0.1em] uppercase mb-2 {milestone.status === 'complete' ? 'text-steel-300' : milestone.status === 'active' ? 'text-gold-warm' : 'text-gold-200'}">
-									{milestone.title}
-								</h3>
-								<p class="text-xs leading-relaxed text-steel-400 font-light">
-									{milestone.description}
-								</p>
-							</div>
-						</div>
-					{/each}
+						{/each}
+					</div>
+				</div>
+
+				<!-- Custom slider -->
+				<div
+					class="roadmap-slider"
+					bind:this={sliderTrackEl}
+					onpointerdown={onSliderDown}
+					onpointermove={onSliderMove}
+					onpointerup={onSliderUp}
+					onpointercancel={onSliderUp}
+					role="slider"
+					aria-valuenow={Math.round(scrollProgress * 100)}
+					aria-valuemin={0}
+					aria-valuemax={100}
+					aria-label="Roadmap scroll"
+					tabindex={0}
+				>
+					<div class="roadmap-slider-track"></div>
+					<div
+						class="roadmap-slider-fill"
+						style="width: {scrollProgress * 100}%; background: color-mix(in srgb, var(--color-steel-400) {Math.round((1 - scrollProgress) * 100)}%, var(--color-gold-warm));"
+					></div>
+					<div
+						class="roadmap-slider-thumb"
+						style="left: {scrollProgress * 100}%; border-color: color-mix(in srgb, var(--color-steel-400) {Math.round((1 - scrollProgress) * 100)}%, var(--color-gold-warm));"
+					></div>
 				</div>
 			</div>
 		</section>
@@ -279,10 +348,9 @@
 <style>
 	.roadmap {
 		position: relative;
-		overflow: hidden;
 	}
 
-	/* Horizontal track */
+	/* Horizontal track line across the top */
 	.roadmap-track {
 		position: absolute;
 		top: 8px;
@@ -291,6 +359,7 @@
 		height: 1px;
 		background: var(--color-steel-500);
 		opacity: 0.2;
+		z-index: 0;
 	}
 
 	.roadmap-track-fill {
@@ -304,17 +373,33 @@
 		width: 100%;
 	}
 
-	/* Items container — horizontal scroll on mobile, grid on desktop */
-	.roadmap-items {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-		gap: 2rem;
+	/* Scroll container — hides native scrollbar */
+	.roadmap-scroll {
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
 		position: relative;
 	}
 
-	/* Individual milestone */
+	.roadmap-scroll::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Items row — never wraps */
+	.roadmap-items {
+		display: flex;
+		gap: 2rem;
+		position: relative;
+		padding-right: 2rem;
+	}
+
+	/* Individual milestone — fixed width */
 	.roadmap-item {
+		flex: 0 0 220px;
 		padding-top: 2rem;
+		position: relative;
 		opacity: 0;
 		transform: translateY(12px);
 	}
@@ -346,7 +431,7 @@
 		height: 7px;
 		border: 1px solid var(--color-steel-400);
 		transform: rotate(45deg) translate(2px, 2px);
-		transition: border-color 0.6s ease, background 0.6s ease;
+		transition: border-color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
 	}
 
 	.roadmap-item-complete .roadmap-marker-dot {
@@ -360,8 +445,60 @@
 		box-shadow: 0 0 8px rgba(212, 165, 116, 0.4);
 	}
 
+	/* Highlighted milestone (e.g. LAUNCH) — gold with glow */
+	.roadmap-item-highlight .roadmap-marker-dot {
+		border-color: var(--color-gold-warm);
+		background: var(--color-gold-warm);
+		box-shadow: 0 0 12px rgba(212, 165, 116, 0.6), 0 0 24px rgba(212, 165, 116, 0.2);
+	}
+
 	/* Content */
 	.roadmap-content {
 		padding-top: 0.75rem;
+	}
+
+	/* ── Custom slider ── */
+	.roadmap-slider {
+		position: relative;
+		height: 24px;
+		margin-top: 2rem;
+		cursor: pointer;
+		touch-action: none;
+		user-select: none;
+	}
+
+	.roadmap-slider-track {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: var(--color-steel-500);
+		opacity: 0.25;
+		transform: translateY(-50%);
+	}
+
+	.roadmap-slider-fill {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		height: 1px;
+		transform: translateY(-50%);
+		transition: width 0.15s ease-out;
+	}
+
+	.roadmap-slider-thumb {
+		position: absolute;
+		top: 50%;
+		width: 9px;
+		height: 9px;
+		border: 1px solid var(--color-steel-400);
+		transform: translate(-50%, -50%) rotate(45deg);
+		transition: left 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.roadmap-slider:hover .roadmap-slider-thumb,
+	.roadmap-slider:active .roadmap-slider-thumb {
+		box-shadow: 0 0 8px rgba(212, 165, 116, 0.3);
 	}
 </style>
