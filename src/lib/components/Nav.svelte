@@ -17,9 +17,9 @@
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-steel-500/30 bg-void-200/80 backdrop-blur-md">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		<a href="/" class="flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase hover:text-gold-warm transition-colors">
-			<svg class="nav-logo h-4 w-4 text-gold-300 transition-colors group-hover:text-gold-warm" viewBox="0 0 24 24" fill="currentColor">
-				<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+		<a href="/" class="nav-brand flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase transition-colors hover:text-gold-warm">
+			<svg class="nav-logo h-[9px] w-auto relative -top-px" viewBox="0 0 729.82 329.37" fill="currentColor">
+				<path d="M729.82,62.41V0H53.74C14.15,0,0,32.07,0,62.41v98.81h324.17v73.68s0,32.07-29.47,32.07H0v62.41h729.82v-62.41h-295.57c-28.14-.03-28.6-32.07-28.6-32.07v-73.68h324.17v-62.37l-648.35-.04v-9.53s0-26.87,29.47-26.87"/>
 			</svg>
 			Serenity Engine
 		</a>
@@ -74,11 +74,16 @@
 	.nav-logo {
 		animation: logo-spin 6s linear infinite;
 		filter: drop-shadow(0 0 3px rgba(212, 165, 116, 0.3));
+		transition: filter 0.6s ease;
 	}
 
 	@keyframes logo-spin {
 		from { transform: rotateY(0deg); }
 		to { transform: rotateY(360deg); }
+	}
+
+	.nav-brand:hover .nav-logo {
+		filter: drop-shadow(0 0 4px rgba(212, 165, 116, 0.4));
 	}
 
 	.nav-link {
