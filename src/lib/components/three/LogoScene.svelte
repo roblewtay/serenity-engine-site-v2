@@ -51,7 +51,7 @@
 		targetProximity = raw * raw;
 	});
 
-	useTask(() => {
+	useTask((delta) => {
 		// Lerp scale for zoom-out effect
 		const targetScale = isHome ? scaleHome : scaleAway;
 		currentScale += (targetScale - currentScale) * 0.04;
@@ -93,14 +93,14 @@
 	/>
 </T.PerspectiveCamera>
 
-<T.DirectionalLight position={[10, 8, 5]} intensity={0.6} color="#FFF5E6" />
-<T.DirectionalLight position={[-5, 2, -3]} intensity={0.15} color="#E8C17F" />
+<T.DirectionalLight position={[10, 8, 5]} intensity={0.6} color="#F0F0FF" />
+<T.DirectionalLight position={[-5, 2, -3]} intensity={0.15} color="#C8C8D4" />
 <T.AmbientLight intensity={0.05} />
 <T.PointLight
 	bind:ref={pointLightRef}
 	position={[0, 0, 2]}
 	intensity={currentLightIntensity}
-	color="#E8C17F"
+	color="#B8B8CC"
 	distance={10}
 	decay={1.2}
 />

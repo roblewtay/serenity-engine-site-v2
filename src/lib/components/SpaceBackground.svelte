@@ -132,7 +132,7 @@
 			sheen.r=sin(film*6.2832)*.5+.5;
 			sheen.g=sin(film*6.2832+2.094)*.5+.5;
 			sheen.b=sin(film*6.2832+4.189)*.5+.5;
-			sheen=mix(sheen,vec3(.83,.65,.46)*sheen,.4);
+			sheen=mix(sheen,vec3(.7,.72,.82)*sheen,.4);
 
 			float act=abs(h)+length(norm)*2.;
 			float hi=smoothstep(-.1,.6,liq)*.03;
@@ -172,7 +172,7 @@
 			sheen.r=sin(film*6.2832)*.5+.5;
 			sheen.g=sin(film*6.2832+2.094)*.5+.5;
 			sheen.b=sin(film*6.2832+4.189)*.5+.5;
-			sheen=mix(sheen,vec3(.83,.65,.46)*sheen,.4);
+			sheen=mix(sheen,vec3(.7,.72,.82)*sheen,.4);
 
 			float hi=smoothstep(-.1,.6,liq)*.08;
 			vec3 col=vec3(.035,.03,.03)+sheen*hi;
