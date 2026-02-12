@@ -25,7 +25,7 @@
 
 <div class="fixed left-0 lg:left-1/2 bottom-0 z-[60] h-full w-[2px]">
 	<div
-		class="w-full bg-gradient-to-t from-steel-400 to-gold-300 absolute bottom-0 transition-[height] duration-150"
-		style="height: {Math.max(progress * 100, progress > 0 ? 2 : 0)}%;"
+		class="w-full absolute bottom-0 transition-[height,background-color] duration-300"
+		style="height: {Math.max(progress * 100, progress > 0 ? 2 : 0)}%; background: color-mix(in srgb, var(--color-steel-400) {Math.round((1 - progress) * 100)}%, var(--color-gold-warm));"
 	></div>
 </div>

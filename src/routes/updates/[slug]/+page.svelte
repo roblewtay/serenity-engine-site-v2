@@ -7,7 +7,7 @@
 </svelte:head>
 
 <div class="px-8 pt-32 pb-20 lg:px-12">
-	<a href="/updates" class="mb-8 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-300 transition-colors">
+	<a href="/updates" class="mb-8 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-warm transition-colors">
 		&larr; All Updates
 	</a>
 
@@ -30,7 +30,7 @@
 					{#if data.post.category}
 						<a
 							href="/updates/category/{data.post.category}"
-							class="border border-steel-500/20 px-2 py-0.5 text-[10px] tracking-[0.1em] text-steel-400 uppercase hover:border-gold-300/30 hover:text-gold-300 transition-colors"
+							class="chip border border-steel-500/20 px-2 py-0.5 text-[10px] tracking-[0.1em] text-steel-400 uppercase hover:text-gold-warm"
 						>
 							{data.post.category}
 						</a>
@@ -38,7 +38,7 @@
 					{#each data.post.tags as tag}
 						<a
 							href="/updates/tag/{tag}"
-							class="text-[10px] tracking-wider text-steel-500 hover:text-gold-300 transition-colors"
+							class="text-[10px] tracking-wider text-steel-500 hover:text-gold-warm transition-colors"
 						>
 							#{tag}
 						</a>

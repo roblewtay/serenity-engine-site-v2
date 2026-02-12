@@ -1,5 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+
+	interface Milestone {
+		date: string;
+		title: string;
+		description: string;
+		status: 'complete' | 'active' | 'upcoming';
+	}
 
 	const projects: Record<string, {
 		name: string;
@@ -7,6 +15,7 @@
 		why: string;
 		how: { statement: string; principles: { title: string; description: string }[] };
 		what: { statement: string; highlights: string[] };
+		roadmap: Milestone[];
 	}> = {
 		'the-discipline': {
 			name: 'The Discipline',
@@ -38,13 +47,71 @@
 					'Philosophy-driven interaction design',
 					'Community built around depth'
 				]
-			}
+			},
+			roadmap: [
+				{
+					date: 'Q4 2025',
+					title: 'Foundation',
+					description: 'Core platform architecture, design system, and spatial environment prototypes.',
+					status: 'complete'
+				},
+				{
+					date: 'Q1 2026',
+					title: 'Environment',
+					description: 'Immersive 3D spaces, ambient soundscapes, and initial interaction models.',
+					status: 'active'
+				},
+				{
+					date: 'Q2 2026',
+					title: 'Community',
+					description: 'Discussion spaces, user profiles, and contemplative conversation tools.',
+					status: 'upcoming'
+				},
+				{
+					date: 'Q3 2026',
+					title: 'Audio',
+					description: 'Spatial audio engine, ambient compositions, and sound-as-architecture features.',
+					status: 'upcoming'
+				},
+				{
+					date: 'Q4 2026',
+					title: 'Practice',
+					description: 'Reflection tools, challenge frameworks, and personal growth tracking.',
+					status: 'upcoming'
+				},
+				{
+					date: '2027',
+					title: 'Open',
+					description: 'Public launch. A digital sanctuary, open to all who seek depth.',
+					status: 'upcoming'
+				}
+			]
 		}
 	};
 
 	const slug = $derived($page.params.slug);
 	const project = $derived(projects[slug]);
 	const title = $derived(project ? `${project.name} — Serenity Engine` : 'Project Not Found — Serenity Engine');
+
+	let roadmapVisible = $state(false);
+	let roadmapEl: HTMLElement;
+
+	onMount(() => {
+		if (!roadmapEl) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					roadmapVisible = true;
+					observer.disconnect();
+				}
+			},
+			{ threshold: 0.15 }
+		);
+
+		observer.observe(roadmapEl);
+		return () => observer.disconnect();
+	});
 </script>
 
 <svelte:head>
@@ -54,20 +121,20 @@
 {#if !project}
 	<div class="px-8 pt-32 pb-20 text-center">
 		<p class="text-steel-400">Project not found.</p>
-		<a href="/projects" class="mt-4 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-300 transition-colors">
+		<a href="/projects" class="mt-4 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-warm transition-colors">
 			&larr; Back to Projects
 		</a>
 	</div>
 {:else}
-	<div class="px-8 pt-32 pb-20 lg:px-12">
-		<a href="/projects" class="mb-16 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-300 transition-colors">
+	<div class="mx-auto max-w-5xl px-8 pt-32 pb-20 lg:px-12">
+		<a href="/projects" class="mb-16 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-warm transition-colors">
 			&larr; All Projects
 		</a>
 
 		<!-- WHY -->
 		<section class="py-20 text-center animate-fade-in">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">01</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-300 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
 				Why
 			</h2>
 			<p class="mx-auto max-w-2xl text-lg leading-relaxed text-steel-300 font-light sm:text-xl">
@@ -78,14 +145,14 @@
 		<!-- Divider -->
 		<div class="flex items-center justify-center py-4">
 			<div class="h-px w-16 bg-steel-500/30"></div>
-			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-300/40"></div>
+			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-warm/40"></div>
 			<div class="h-px w-16 bg-steel-500/30"></div>
 		</div>
 
 		<!-- HOW -->
 		<section class="py-20 animate-fade-in" style="animation-delay: 0.3s; opacity: 0;">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">02</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-300 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
 				How
 			</h2>
 			<p class="mb-12 max-w-2xl text-base leading-relaxed text-steel-300 font-light">
@@ -93,7 +160,7 @@
 			</p>
 			<div class="grid gap-6 sm:grid-cols-3">
 				{#each project.how.principles as principle}
-					<div class="border border-steel-500/15 p-6 transition-all hover:border-gold-300/20">
+					<div class="border border-steel-500/15 p-6 transition-all hover:border-gold-warm/30">
 						<h3 class="mb-3 text-xs font-light tracking-[0.15em] text-gold-200 uppercase">
 							{principle.title}
 						</h3>
@@ -108,14 +175,14 @@
 		<!-- Divider -->
 		<div class="flex items-center justify-center py-4">
 			<div class="h-px w-16 bg-steel-500/30"></div>
-			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-300/40"></div>
+			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-warm/40"></div>
 			<div class="h-px w-16 bg-steel-500/30"></div>
 		</div>
 
 		<!-- WHAT -->
 		<section class="py-20 animate-fade-in" style="animation-delay: 0.6s; opacity: 0;">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">03</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-300 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
 				What
 			</h2>
 			<p class="mb-10 max-w-2xl text-base leading-relaxed text-steel-300 font-light">
@@ -124,24 +191,83 @@
 			<ul class="mb-12 space-y-3 max-w-xl">
 				{#each project.what.highlights as highlight}
 					<li class="flex items-center gap-3 text-sm text-steel-400 font-light">
-						<span class="h-px w-4 bg-gold-300/40"></span>
+						<span class="h-px w-4 bg-gold-warm/40"></span>
 						{highlight}
 					</li>
 				{/each}
 			</ul>
+		</section>
 
-			<div class="flex flex-wrap items-center gap-4">
+		<!-- Divider -->
+		<div class="flex items-center justify-center py-4">
+			<div class="h-px w-16 bg-steel-500/30"></div>
+			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-warm/40"></div>
+			<div class="h-px w-16 bg-steel-500/30"></div>
+		</div>
+
+		<!-- ROADMAP -->
+		<section class="py-20" bind:this={roadmapEl}>
+			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">04</span>
+			<h2 class="mb-16 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
+				Roadmap
+			</h2>
+
+			<div class="roadmap" class:roadmap-visible={roadmapVisible}>
+				<!-- Track line -->
+				<div class="roadmap-track">
+					<div class="roadmap-track-fill"></div>
+				</div>
+
+				<!-- Milestones -->
+				<div class="roadmap-items">
+					{#each project.roadmap as milestone, i}
+						<div
+							class="roadmap-item"
+							class:roadmap-item-complete={milestone.status === 'complete'}
+							class:roadmap-item-active={milestone.status === 'active'}
+							style="--delay: {i * 0.15}s;"
+						>
+							<div class="roadmap-marker">
+								<div class="roadmap-marker-dot"></div>
+							</div>
+							<div class="roadmap-content">
+								<span class="block text-[10px] tracking-[0.2em] uppercase mb-1.5 {milestone.status === 'complete' ? 'text-steel-400' : milestone.status === 'active' ? 'text-gold-warm' : 'text-steel-500'}">
+									{milestone.date}
+								</span>
+								<h3 class="text-sm font-light tracking-[0.1em] uppercase mb-2 {milestone.status === 'complete' ? 'text-steel-300' : milestone.status === 'active' ? 'text-gold-warm' : 'text-gold-200'}">
+									{milestone.title}
+								</h3>
+								<p class="text-xs leading-relaxed text-steel-400 font-light">
+									{milestone.description}
+								</p>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</section>
+
+		<!-- Divider -->
+		<div class="flex items-center justify-center py-4">
+			<div class="h-px w-16 bg-steel-500/30"></div>
+			<div class="mx-4 h-1.5 w-1.5 rotate-45 border border-gold-warm/40"></div>
+			<div class="h-px w-16 bg-steel-500/30"></div>
+		</div>
+
+		<!-- CTA -->
+		<section class="py-20 text-center">
+			<div class="flex flex-wrap items-center justify-center gap-4">
 				<a
 					href={project.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="inline-block border border-gold-300/40 px-6 py-2.5 text-xs tracking-[0.15em] text-gold-300 uppercase transition-all hover:border-gold-200 hover:text-gold-200"
+					class="inline-block border border-steel-500/30 px-6 py-2.5 text-xs tracking-[0.15em] text-steel-300 uppercase transition-all hover:border-gold-warm hover:text-gold-warm"
 				>
 					Visit {project.name} &rarr;
 				</a>
 				<a
 					href="/projects"
-					class="inline-block px-6 py-2.5 text-xs tracking-[0.15em] text-steel-400 uppercase transition-all hover:text-gold-300"
+					class="inline-block px-6 py-2.5 text-xs tracking-[0.15em] text-steel-400 uppercase transition-all hover:text-gold-warm"
 				>
 					&larr; Back to Projects
 				</a>
@@ -149,3 +275,93 @@
 		</section>
 	</div>
 {/if}
+
+<style>
+	.roadmap {
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Horizontal track */
+	.roadmap-track {
+		position: absolute;
+		top: 8px;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: var(--color-steel-500);
+		opacity: 0.2;
+	}
+
+	.roadmap-track-fill {
+		height: 100%;
+		width: 0;
+		background: linear-gradient(to right, var(--color-steel-400), var(--color-gold-warm));
+		transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.roadmap-visible .roadmap-track-fill {
+		width: 100%;
+	}
+
+	/* Items container — horizontal scroll on mobile, grid on desktop */
+	.roadmap-items {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: 2rem;
+		position: relative;
+	}
+
+	/* Individual milestone */
+	.roadmap-item {
+		padding-top: 2rem;
+		opacity: 0;
+		transform: translateY(12px);
+	}
+
+	.roadmap-visible .roadmap-item {
+		animation: roadmapReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+		animation-delay: var(--delay);
+	}
+
+	@keyframes roadmapReveal {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Marker on the track */
+	.roadmap-marker {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 17px;
+		height: 17px;
+		transform: translate(-1px, 0);
+	}
+
+	.roadmap-marker-dot {
+		width: 7px;
+		height: 7px;
+		border: 1px solid var(--color-steel-400);
+		transform: rotate(45deg) translate(2px, 2px);
+		transition: border-color 0.6s ease, background 0.6s ease;
+	}
+
+	.roadmap-item-complete .roadmap-marker-dot {
+		border-color: var(--color-steel-400);
+		background: var(--color-steel-400);
+	}
+
+	.roadmap-item-active .roadmap-marker-dot {
+		border-color: var(--color-gold-warm);
+		background: var(--color-gold-warm);
+		box-shadow: 0 0 8px rgba(212, 165, 116, 0.4);
+	}
+
+	/* Content */
+	.roadmap-content {
+		padding-top: 0.75rem;
+	}
+</style>

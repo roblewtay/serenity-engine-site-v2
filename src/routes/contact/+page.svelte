@@ -51,7 +51,7 @@
 			<p class="text-gold-200 mb-2">Message sent.</p>
 			<p class="text-sm text-steel-400">We'll get back to you as soon as we can.</p>
 			<button
-				class="mt-6 border border-steel-500/30 px-5 py-2 text-steel-300 hover:border-gold-300/40 hover:text-gold-300 transition-all"
+				class="mt-6 border border-steel-500/30 px-5 py-2 text-steel-300 hover:border-gold-warm hover:text-gold-warm transition-all"
 				onclick={() => status = 'idle'}
 			>
 				Send Another
@@ -105,7 +105,7 @@
 			<button
 				type="submit"
 				disabled={status === 'sending'}
-				class="w-full border border-gold-300/40 px-6 py-3 text-gold-300 transition-all hover:border-gold-200 hover:text-gold-200 hover:shadow-[0_0_20px_rgba(212,165,116,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
+				class="w-full border border-steel-500/30 px-6 py-3 text-steel-300 transition-all hover:border-gold-warm hover:bg-gold-warm/10 hover:text-gold-warm hover:shadow-[0_0_20px_rgba(212,165,116,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
 			>
 				{status === 'sending' ? 'Sending...' : 'Send Message'}
 			</button>

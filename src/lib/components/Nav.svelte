@@ -17,8 +17,8 @@
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-steel-500/30 bg-void-200/80 backdrop-blur-md">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		<a href="/" class="flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase hover:text-gold-100 transition-colors">
-			<svg class="nav-logo h-4 w-4 text-gold-300" viewBox="0 0 24 24" fill="currentColor">
+		<a href="/" class="flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase hover:text-gold-warm transition-colors">
+			<svg class="nav-logo h-4 w-4 text-gold-300 transition-colors group-hover:text-gold-warm" viewBox="0 0 24 24" fill="currentColor">
 				<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
 			</svg>
 			Serenity Engine
@@ -29,7 +29,7 @@
 			{#each links as link}
 				<a
 					href={link.href}
-					class="text-xs tracking-[0.15em] uppercase transition-colors {$page.url.pathname.startsWith(link.href) ? 'text-gold-200' : 'text-steel-300 hover:text-gold-300'}"
+					class="nav-link text-xs tracking-[0.15em] uppercase {$page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
 				>
 					{link.label}
 				</a>
@@ -38,7 +38,7 @@
 
 		<!-- Mobile hamburger -->
 		<button
-			class="sm:hidden text-steel-300 hover:text-gold-300 transition-colors"
+			class="sm:hidden text-steel-300 hover:text-gold-warm transition-colors"
 			onclick={() => mobileOpen = !mobileOpen}
 			aria-label="Toggle navigation"
 		>
@@ -60,7 +60,7 @@
 					<a
 						href={link.href}
 						onclick={closeMobile}
-						class="py-2 text-xs tracking-[0.15em] uppercase transition-colors {$page.url.pathname.startsWith(link.href) ? 'text-gold-200' : 'text-steel-300 hover:text-gold-300'}"
+						class="py-2 text-xs tracking-[0.15em] uppercase nav-link {$page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
 					>
 						{link.label}
 					</a>
@@ -79,5 +79,37 @@
 	@keyframes logo-spin {
 		from { transform: rotateY(0deg); }
 		to { transform: rotateY(360deg); }
+	}
+
+	.nav-link {
+		position: relative;
+		transition: color 0.6s ease;
+	}
+
+	.nav-link::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -4px;
+		width: 0;
+		height: 1px;
+		background: var(--color-gold-warm);
+		transition: width 0.6s ease;
+	}
+
+	.nav-link:hover {
+		color: var(--color-gold-warm);
+	}
+
+	.nav-link:hover::after {
+		width: 100%;
+	}
+
+	.nav-link-active {
+		color: var(--color-gold-warm);
+	}
+
+	.nav-link-active::after {
+		width: 100%;
 	}
 </style>

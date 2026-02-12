@@ -7,6 +7,9 @@
 	--color-gold-400: #9090A0;
 	--color-gold-500: #787888;
 
+	--color-gold-warm: #D4A574;
+	--color-gold-warm-light: #E0C4A0;
+
 	--color-steel-100: #E5E7EB;
 	--color-steel-200: #D1D5DB;
 	--color-steel-300: #9CA3AF;
@@ -26,6 +29,7 @@
 
 	--font-sans: 'Inter', system-ui, sans-serif;
 	--font-mono: 'JetBrains Mono', monospace;
+
 }
 
 @layer base {
@@ -34,6 +38,7 @@
 		color: var(--color-sterile-200);
 		font-family: var(--font-sans);
 		touch-action: manipulation;
+		--tw-duration: 600ms;
 	}
 
 	body {
@@ -81,20 +86,20 @@
 	::-webkit-scrollbar { width: 6px; height: 6px; }
 	::-webkit-scrollbar-track { background: var(--color-void-100); }
 	::-webkit-scrollbar-thumb { background: var(--color-steel-500); border-radius: 3px; }
-	::-webkit-scrollbar-thumb:hover { background: var(--color-steel-400); }
+	::-webkit-scrollbar-thumb:hover { background: var(--color-gold-warm); }
 
 	:focus-visible {
-		outline: 1px solid var(--color-gold-300);
+		outline: 1px solid var(--color-gold-warm);
 		outline-offset: 2px;
 	}
 
 	a {
-		color: var(--color-gold-300);
+		color: var(--color-steel-300);
 		text-decoration: none;
-		transition: color 0.3s ease;
+		transition: color 0.6s ease;
 	}
 
-	a:hover { color: var(--color-gold-200); }
+	a:hover { color: var(--color-gold-warm); }
 
 	code, pre {
 		font-family: var(--font-mono);
@@ -116,11 +121,11 @@
 		border: 1px solid var(--color-steel-500);
 		color: var(--color-sterile-200);
 		padding: 0.75rem 1rem;
-		transition: border-color 0.3s ease;
+		transition: border-color 0.6s ease;
 	}
 
 	input:focus, textarea:focus {
-		border-color: var(--color-gold-300);
+		border-color: var(--color-gold-warm);
 		outline: none;
 	}
 
@@ -149,6 +154,39 @@
 .animate-breathe { animation: breathe 4s ease-in-out infinite; }
 .animate-glow { animation: glow 3s ease-in-out infinite; }
 
+/* Filter chip with gold border swipe */
+.chip {
+	position: relative;
+	overflow: hidden;
+	transition: color 0.6s ease, border-color 0.6s ease;
+}
+
+.chip::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border: 1px solid var(--color-gold-warm);
+	opacity: 0;
+	transform: translateX(-100%);
+	transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+.chip:hover::after {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.chip-active {
+	border-color: var(--color-gold-warm) !important;
+	color: var(--color-gold-warm) !important;
+	background: rgba(212, 165, 116, 0.08);
+}
+
+.chip-active::after {
+	opacity: 1;
+	transform: translateX(0);
+}
+
 /* Prose - Engine markdown rendering */
 .prose-engine {
 	color: var(--color-sterile-200);
@@ -176,14 +214,13 @@
 
 .prose-engine h2 { font-size: 1.125rem; }
 .prose-engine h3 { font-size: 1rem; color: var(--color-gold-300); }
+.prose-engine h4 { font-size: 1rem; color: var(--color-gold-400); }
 
 @media (min-width: 640px) {
 	.prose-engine h1 { font-size: 2rem; }
 	.prose-engine h2 { font-size: 1.5rem; }
 	.prose-engine h3 { font-size: 1.2rem; }
 }
-
-.prose-engine h4 { font-size: 1rem; color: var(--color-gold-400); }
 
 .prose-engine p {
 	margin-bottom: 1.25em;
@@ -195,7 +232,7 @@
 .prose-engine em { color: var(--color-gold-100); font-style: italic; }
 
 .prose-engine blockquote {
-	border-left: 2px solid var(--color-gold-300);
+	border-left: 2px solid var(--color-gold-warm);
 	padding-left: 1.5em;
 	margin: 1.5em 0;
 	color: var(--color-steel-200);
@@ -244,9 +281,9 @@
 }
 
 .prose-engine a {
-	color: var(--color-gold-300);
+	color: var(--color-gold-warm);
 	text-decoration: underline;
 	text-underline-offset: 2px;
 }
 
-.prose-engine a:hover { color: var(--color-gold-200); }
+.prose-engine a:hover { color: var(--color-gold-warm-light); }
