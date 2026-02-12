@@ -2,8 +2,8 @@
 	const projects = [
 		{
 			name: 'The Discipline',
-			description: 'A contemplative digital sanctuary — an immersive space for reflection, journaling, and grounding. Built with real-time 3D, spatial audio, and an aesthetic inspired by Devs.',
-			url: 'https://thediscipline.app',
+			description: 'A contemplative digital sanctuary — an immersive space for reflection and practice. Built with real-time 3D, spatial audio, and a unique aesthetic.',
+			url: 'https://thediscipline.org',
 			status: 'Active'
 		}
 	];
