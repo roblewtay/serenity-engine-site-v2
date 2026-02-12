@@ -53,11 +53,11 @@
 		<div class="space-y-8">
 			{#each data.posts as post}
 				<a href="/updates/{post.slug}" class="group block border border-steel-500/20 p-8 transition-all hover:border-gold-warm/40">
-					<div class="mb-3 flex items-center justify-between">
+					<div class="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
 						<h2 class="text-lg font-light tracking-[0.05em] text-gold-200 group-hover:text-gold-warm sm:text-xl">
 							{post.title}
 						</h2>
-						<div class="flex items-center gap-3 text-xs text-steel-500 tracking-wider">
+						<div class="mt-1 sm:mt-0 flex items-center gap-3 text-xs text-steel-500 tracking-wider">
 							{#if post.readingTime}
 								<span>{post.readingTime} min read</span>
 							{/if}

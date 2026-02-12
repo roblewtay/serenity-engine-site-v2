@@ -48,8 +48,10 @@
 </div>
 
 <style>
-	:global(*, *::before, *::after) {
-		cursor: none !important;
+	@media (hover: hover) {
+		:global(*, *::before, *::after) {
+			cursor: none !important;
+		}
 	}
 
 	.cursor-root {
@@ -61,8 +63,10 @@
 		transition: opacity 0.3s ease;
 	}
 
-	.cursor-visible {
-		opacity: 1;
+	@media (hover: hover) {
+		.cursor-visible {
+			opacity: 1;
+		}
 	}
 
 	/* Horizontal line */

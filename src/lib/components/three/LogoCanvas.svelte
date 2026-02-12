@@ -29,7 +29,7 @@
 </script>
 
 <div
-	class="absolute inset-0 h-full w-full"
+	class="logo-canvas-wrapper absolute inset-0 h-full w-full"
 	role="presentation"
 	onmousemove={handleMouseMove}
 >
@@ -39,3 +39,11 @@
 		</Canvas>
 	{/if}
 </div>
+
+<style>
+	@media (hover: none) {
+		.logo-canvas-wrapper {
+			pointer-events: none;
+		}
+	}
+</style>
