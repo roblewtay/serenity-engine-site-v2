@@ -14,7 +14,6 @@
 	let prevMouseY = 0.5;
 	let mouseForce = 0;
 	let lastMouseMove = 0;
-	let simCleared = false;
 
 	// Fluid sim state
 	let hasSim = false;
@@ -278,17 +277,6 @@
 		if (fboB) { gl.deleteFramebuffer(fboB.fbo); gl.deleteTexture(fboB.tex); fboB = null; }
 	}
 
-	function clearSim() {
-		if (!gl || !fboA || !fboB) return;
-		// Clear both FBOs by rendering zero to them
-		[fboA, fboB].forEach(({ fbo }) => {
-			gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
-			gl!.viewport(0, 0, simW, simH);
-			gl!.clearColor(0, 0, 0, 1);
-			gl!.clear(gl!.COLOR_BUFFER_BIT);
-		});
-		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-	}
 
 	// ———— Init ————
 
@@ -358,21 +346,19 @@
 		prevMouseX = mouseX;
 		prevMouseY = mouseY;
 
-		// Track mouse activity and clear sim after 3s idle
+		// Track mouse activity — use aggressive damping when idle to let waves decay naturally
 		if (vel > 0.0001) {
 			lastMouseMove = performance.now();
-			simCleared = false;
-		} else if (!simCleared && performance.now() - lastMouseMove > 3000) {
-			clearSim();
-			simCleared = true;
 		}
+		const idle = performance.now() - lastMouseMove;
+		const damp = idle > 1000 ? 0.92 : 0.97;
 
 		if (hasSim && simProg && renProg && fboA && fboB) {
 			// Run 3 sim steps per frame for good propagation
 			gl.useProgram(simProg);
 			gl.uniform2f(sTexel, 1 / simW, 1 / simH);
 			gl.uniform2f(sMouse, mouseX, mouseY);
-			gl.uniform1f(sDamp, 0.97);
+			gl.uniform1f(sDamp, damp);
 
 			for (let i = 0; i < 3; i++) {
 				// Only apply force on first step to avoid tripling it
