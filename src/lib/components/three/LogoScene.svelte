@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
 	import { useGltf, Environment, OrbitControls } from '@threlte/extras';
-	import type { Group, PointLight, Mesh, MeshStandardMaterial } from 'three';
+	import type { Group, PointLight, Mesh } from 'three';
+	import { MeshStandardMaterial, Color } from 'three';
 
 	interface Props {
 		mouseX?: number;
@@ -23,6 +24,7 @@
 	const scaleAway = 0.7;
 	let currentScale = $state(scaleHome);
 
+
 	// Mouse proximity drives light intensity and emissive
 	const lightIntensityMin = 0.3;
 	const lightIntensityMax = 1.2;
@@ -33,16 +35,29 @@
 	let currentLightIntensity = $state(lightIntensityMin);
 	let currentEmissive = $state(emissiveMin);
 
-	const gltf = useGltf('/models/se-logo-simple.glb');
+	const gltf = useGltf('/3d/models/se-logo-simple.glb');
 
 	let meshes: Mesh[] = $state([]);
+
+	const silverColor = new Color('#C0C0C0');
+	const goldColor = new Color('#C8960C');
+	const currentColor = new Color('#C0C0C0');
+
+	const material = new MeshStandardMaterial({
+		color: currentColor.clone(),
+		metalness: 1.0,
+		roughness: 0.2,
+		envMapIntensity: 1.5
+	});
 
 	$effect(() => {
 		if ($gltf?.scene) {
 			const found: Mesh[] = [];
 			$gltf.scene.traverse((child) => {
 				if ((child as Mesh).isMesh) {
-					found.push(child as Mesh);
+					const mesh = child as Mesh;
+					mesh.material = material;
+					found.push(mesh);
 				}
 			});
 			meshes = found;
@@ -62,6 +77,11 @@
 		if (groupRef) {
 			groupRef.scale.setScalar(currentScale);
 		}
+
+		// Lerp colour: silver on home, gold away
+		const targetColor = isHome ? silverColor : goldColor;
+		currentColor.lerp(targetColor, 0.01);
+		material.color.set(currentColor);
 
 		// Smooth proximity
 		proximity += (targetProximity - proximity) * 0.03;
@@ -109,7 +129,7 @@
 	decay={1.2}
 />
 
-<Environment url="/models/1k.hdr" />
+<Environment url="/3d/models/1k.hdr" />
 
 <T.Group bind:ref={groupRef}>
 	{#if $gltf?.scene}
