@@ -22,7 +22,7 @@
 
 	<div class="space-y-8">
 		{#each projects as project}
-			<article class="border border-steel-500/20 p-8 transition-all hover:border-gold-300/30 hover:shadow-[0_0_30px_rgba(212,165,116,0.05)]">
+			<article class="border border-steel-500/20 p-8">
 				<div class="mb-4 flex items-center justify-between">
 					<h2 class="text-lg font-light tracking-[0.1em] text-gold-200 uppercase sm:text-xl">
 						{project.name}
@@ -37,7 +37,7 @@
 				<div class="flex items-center gap-4">
 					<a
 						href="/projects/{project.slug}"
-						class="inline-block border border-gold-300/40 px-5 py-2 text-xs tracking-[0.15em] text-gold-300 uppercase transition-all hover:border-gold-200 hover:text-gold-200"
+						class="btn"
 					>
 						Details &rarr;
 					</a>
@@ -45,7 +45,7 @@
 						href={project.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-block px-5 py-2 text-xs tracking-[0.15em] text-steel-400 uppercase transition-all hover:text-gold-300"
+						class="btn"
 					>
 						Visit Site &rarr;
 					</a>

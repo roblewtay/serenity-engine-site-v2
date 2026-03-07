@@ -154,6 +154,42 @@
 .animate-breathe { animation: breathe 4s ease-in-out infinite; }
 .animate-glow { animation: glow 3s ease-in-out infinite; }
 
+/* Bordered button — progressive gold border wipe on hover */
+.btn {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	border: 1px solid var(--color-steel-500);
+	padding: 0.5rem 1.25rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--color-steel-300);
+	transition: color 0.5s ease, border-color 0.5s ease;
+	cursor: pointer;
+	background: transparent;
+	text-align: center;
+}
+
+.btn::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border: 1px solid var(--color-gold-warm);
+	opacity: 0;
+	transform: translateX(-100%);
+	transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.btn:hover {
+	color: var(--color-gold-warm);
+}
+
+.btn:hover::after {
+	opacity: 1;
+	transform: translateX(0);
+}
+
 /* Filter chip with gold border swipe */
 .chip {
 	position: relative;

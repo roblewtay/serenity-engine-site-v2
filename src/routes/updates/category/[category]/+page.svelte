@@ -7,7 +7,7 @@
 </svelte:head>
 
 <div class="px-8 pt-32 pb-20 lg:px-12">
-	<a href="/updates" class="mb-8 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-300 transition-colors">
+	<a href="/updates" class="mb-8 inline-block text-xs tracking-[0.1em] text-steel-400 uppercase hover:text-gold-warm transition-colors">
 		&larr; All Updates
 	</a>
 
@@ -20,7 +20,7 @@
 	{:else}
 		<div class="space-y-8">
 			{#each data.posts as post}
-				<a href="/updates/{post.slug}" class="group block border border-steel-500/20 p-8 transition-all hover:border-gold-300/30">
+				<a href="/updates/{post.slug}" class="group block border border-steel-500/20 p-8 transition-all hover:border-gold-warm/40">
 					<div class="mb-3 flex items-center justify-between">
 						<h2 class="text-lg font-light tracking-[0.05em] text-gold-200 group-hover:text-gold-100 sm:text-xl">
 							{post.title}

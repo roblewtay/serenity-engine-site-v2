@@ -47,7 +47,10 @@
 		color: currentColor.clone(),
 		metalness: 1.0,
 		roughness: 0.2,
-		envMapIntensity: 1.5
+		envMapIntensity: 1.5,
+		transparent: true,
+		opacity: 0.75,
+		depthWrite: false
 	});
 
 	$effect(() => {

@@ -331,7 +331,7 @@
 			<div class="flex flex-wrap items-center justify-center gap-4">
 				<a
 					href="/projects"
-					class="inline-block px-6 py-2.5 text-xs tracking-[0.15em] text-steel-400 uppercase transition-all hover:text-gold-warm"
+					class="btn"
 				>
 					&larr; Back to Projects
 				</a>
@@ -339,7 +339,7 @@
 					href={project.url}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="inline-block border border-steel-500/30 px-6 py-2.5 text-xs tracking-[0.15em] text-steel-300 uppercase transition-all hover:border-gold-warm hover:text-gold-warm"
+					class="btn"
 				>
 					Visit {project.name} &rarr;
 				</a>
