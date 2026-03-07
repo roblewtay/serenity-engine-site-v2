@@ -105,7 +105,6 @@
 		uniform vec2 u_resolution;
 		uniform vec2 u_simTexel;
 		${NOISE}
-
 		void main(){
 			vec2 uv=gl_FragCoord.xy/u_resolution;
 			float aspect=u_resolution.x/u_resolution.y;
