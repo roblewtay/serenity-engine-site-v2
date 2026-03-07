@@ -3,6 +3,48 @@
 
 	let mobileOpen = $state(false);
 
+	let logoEl: SVGElement | undefined = $state();
+	let spinning = $state(false);
+	let angle = $state(0);
+	let speed = $state(0);
+	let rafId: number;
+
+	function onBrandEnter() {
+		spinning = true;
+		speed = 3; // degrees per frame
+		cancelAnimationFrame(rafId);
+		animate();
+	}
+
+	function onBrandLeave() {
+		spinning = false;
+		// speed will decelerate in animate loop
+	}
+
+	function animate() {
+		if (spinning) {
+			// accelerate up to target speed
+			speed += (3 - speed) * 0.1;
+		} else {
+			// decelerate
+			speed *= 0.95;
+		}
+
+		angle = (angle + speed) % 360;
+
+		if (logoEl) {
+			logoEl.style.transform = `rotateY(${angle}deg)`;
+		}
+
+		if (speed > 0.05) {
+			rafId = requestAnimationFrame(animate);
+		} else if (!spinning) {
+			// snap to nearest 0/360
+			angle = 0;
+			if (logoEl) logoEl.style.transform = `rotateY(0deg)`;
+		}
+	}
+
 	const links = [
 		{ href: '/about', label: 'About' },
 		{ href: '/projects', label: 'Projects' },
@@ -17,8 +59,8 @@
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-steel-500/30 bg-void-200/80 backdrop-blur-md">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		<a href="/" class="nav-brand flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase transition-colors hover:text-gold-warm">
-			<svg class="nav-logo h-[9px] w-auto relative -top-px" viewBox="0 0 729.82 329.37" fill="currentColor">
+		<a href="/" class="nav-brand flex items-center gap-2.5 text-xs font-medium tracking-[0.25em] text-gold-200 uppercase transition-colors hover:text-gold-warm" onmouseenter={onBrandEnter} onmouseleave={onBrandLeave}>
+			<svg bind:this={logoEl} class="nav-logo h-[9px] w-auto relative -top-px" viewBox="0 0 729.82 329.37" fill="currentColor">
 				<path d="M729.82,62.41V0H53.74C14.15,0,0,32.07,0,62.41v98.81h324.17v73.68s0,32.07-29.47,32.07H0v62.41h729.82v-62.41h-295.57c-28.14-.03-28.6-32.07-28.6-32.07v-73.68h324.17v-62.37l-648.35-.04v-9.53s0-26.87,29.47-26.87"/>
 			</svg>
 			Serenity Engine
@@ -72,14 +114,9 @@
 
 <style>
 	.nav-logo {
-		animation: logo-spin 6s linear infinite;
 		filter: drop-shadow(0 0 3px rgba(212, 165, 116, 0.3));
 		transition: filter 0.6s ease;
-	}
-
-	@keyframes logo-spin {
-		from { transform: rotateY(0deg); }
-		to { transform: rotateY(360deg); }
+		will-change: transform;
 	}
 
 	.nav-brand:hover .nav-logo {
