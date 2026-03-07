@@ -13,7 +13,7 @@
 
 	<article>
 		<header class="mb-10">
-			<h1 class="mb-3 text-2xl font-light tracking-[0.05em] text-gold-200 sm:text-3xl">
+			<h1 class="mb-3 text-2xl font-light tracking-[0.05em] text-gold-warm sm:text-3xl">
 				{data.post.title}
 			</h1>
 			<div class="flex items-center gap-3 text-xs text-steel-500 tracking-wider">

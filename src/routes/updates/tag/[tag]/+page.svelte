@@ -11,7 +11,7 @@
 		&larr; All Updates
 	</a>
 
-	<h1 class="mb-12 text-center text-3xl font-light tracking-[0.15em] text-gold-200 sm:text-4xl">
+	<h1 class="mb-12 text-center text-3xl font-light tracking-[0.15em] text-gold-warm sm:text-4xl">
 		<span class="uppercase">Updates tagged</span> <span class="text-steel-400">#{data.tag}</span>
 	</h1>
 
@@ -22,7 +22,7 @@
 			{#each data.posts as post}
 				<a href="/updates/{post.slug}" class="group block border border-steel-500/20 p-8 transition-all hover:border-gold-warm/40">
 					<div class="mb-3 flex items-center justify-between">
-						<h2 class="text-lg font-light tracking-[0.05em] text-gold-200 group-hover:text-gold-100 sm:text-xl">
+						<h2 class="text-lg font-light tracking-[0.05em] text-gold-warm group-hover:text-gold-100 sm:text-xl">
 							{post.title}
 						</h2>
 						<div class="flex items-center gap-3 text-xs text-steel-500 tracking-wider">

@@ -16,7 +16,7 @@
 </svelte:head>
 
 <div class="px-8 pt-32 pb-20 lg:px-12">
-	<h1 class="mb-12 text-center text-3xl font-light tracking-[0.15em] text-gold-200 uppercase sm:text-4xl">
+	<h1 class="mb-12 text-center text-3xl font-light tracking-[0.15em] text-gold-warm uppercase sm:text-4xl">
 		Projects
 	</h1>
 
@@ -24,7 +24,7 @@
 		{#each projects as project}
 			<article class="border border-steel-500/20 p-8">
 				<div class="mb-4 flex items-center justify-between">
-					<h2 class="text-lg font-light tracking-[0.1em] text-gold-200 uppercase sm:text-xl">
+					<h2 class="text-lg font-light tracking-[0.1em] text-gold-warm uppercase sm:text-xl">
 						{project.name}
 					</h2>
 					<span class="border border-gold-300/30 px-3 py-1 text-[10px] tracking-[0.15em] text-gold-300 uppercase">

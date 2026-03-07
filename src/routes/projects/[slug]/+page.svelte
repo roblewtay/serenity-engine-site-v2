@@ -134,7 +134,7 @@
 		<!-- WHY -->
 		<section class="py-20 text-center animate-fade-in">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">01</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-warm uppercase sm:text-5xl">
 				Why
 			</h2>
 			<p class="mx-auto max-w-2xl text-lg leading-relaxed text-steel-300 font-light sm:text-xl">
@@ -152,7 +152,7 @@
 		<!-- HOW -->
 		<section class="py-20 animate-fade-in" style="animation-delay: 0.3s; opacity: 0;">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">02</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-warm uppercase sm:text-5xl">
 				How
 			</h2>
 			<p class="mb-12 max-w-2xl text-base leading-relaxed text-steel-300 font-light">
@@ -161,7 +161,7 @@
 			<div class="grid gap-6 sm:grid-cols-3">
 				{#each project.how.principles as principle}
 					<div class="border border-steel-500/15 p-6 transition-all hover:border-gold-warm/30">
-						<h3 class="mb-3 text-xs font-light tracking-[0.15em] text-gold-200 uppercase">
+						<h3 class="mb-3 text-xs font-light tracking-[0.15em] text-gold-warm uppercase">
 							{principle.title}
 						</h3>
 						<p class="text-sm leading-relaxed text-steel-400 font-light">
@@ -182,7 +182,7 @@
 		<!-- WHAT -->
 		<section class="py-20 animate-fade-in" style="animation-delay: 0.6s; opacity: 0;">
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">03</span>
-			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
+			<h2 class="mb-8 text-3xl font-light tracking-[0.2em] text-gold-warm uppercase sm:text-5xl">
 				What
 			</h2>
 			<p class="mb-10 max-w-2xl text-base leading-relaxed text-steel-300 font-light">
@@ -208,7 +208,7 @@
 		<!-- ROADMAP -->
 		<section class="py-20" bind:this={roadmapEl}>
 			<span class="mb-6 block text-[11px] tracking-[0.3em] text-steel-500">04</span>
-			<h2 class="mb-16 text-3xl font-light tracking-[0.2em] text-gold-200 uppercase sm:text-5xl">
+			<h2 class="mb-16 text-3xl font-light tracking-[0.2em] text-gold-warm uppercase sm:text-5xl">
 				Roadmap
 			</h2>
 
