@@ -117,9 +117,10 @@
 	}
 
 	.cursor-hover .cursor-dot {
-		width: 8px;
-		height: 8px;
+		width: 16px;
+		height: 16px;
 		border-color: var(--color-gold-warm);
+		background: rgba(212, 165, 116, 0.5);
 		transform: translate(-50%, -50%) rotate(45deg);
 	}
 </style>
