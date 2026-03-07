@@ -90,11 +90,13 @@
 			v+=(l+r+t+b-4.*h)*.24;
 			v*=u_damping;
 			h+=v;
+			h*=u_damping;
 
 			float d=distance(uv,u_mouse);
 			h+=u_force*exp(-d*d*500.);
 
-			h=clamp(h,-2.,2.);
+			h=clamp(h,-0.5,0.5);
+			v=clamp(v,-0.5,0.5);
 			gl_FragColor=vec4(h,v,0,1);
 		}
 	`;
@@ -341,8 +343,8 @@
 		const dx = mouseX - prevMouseX;
 		const dy = mouseY - prevMouseY;
 		const vel = Math.sqrt(dx * dx + dy * dy);
-		mouseForce = Math.min(1.0, mouseForce + vel * 6.0);
-		mouseForce *= 0.92;
+		mouseForce = Math.min(0.4, mouseForce + vel * 3.0);
+		mouseForce *= 0.88;
 		prevMouseX = mouseX;
 		prevMouseY = mouseY;
 
