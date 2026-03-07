@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { beforeNavigate, afterNavigate } from '$app/navigation';
 	import { tick, onMount } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
@@ -12,9 +12,9 @@
 	import Cursor from '$lib/components/Cursor.svelte';
 
 	let { children } = $props();
-	let isHome = $derived($page.url.pathname === '/');
-	let isArticle = $derived($page.url.pathname.startsWith('/updates/') && $page.url.pathname !== '/updates/');
-	let isProjectDetail = $derived($page.url.pathname.startsWith('/projects/') && $page.url.pathname !== '/projects/');
+	let isHome = $derived(page.url.pathname === '/');
+	let isArticle = $derived(page.url.pathname.startsWith('/updates/') && page.url.pathname !== '/updates/');
+	let isProjectDetail = $derived(page.url.pathname.startsWith('/projects/') && page.url.pathname !== '/projects/');
 
 	let leavingProject = $state(false);
 	let holdProjectLayout = $state(false);
@@ -235,7 +235,7 @@
 	<main bind:this={mainEl} class="flex-1 overflow-y-auto overflow-x-hidden">
 		<div class="flex min-h-full flex-col">
 			<div class="flex-1 relative">
-				{#key $page.url.pathname}
+				{#key page.url.pathname}
 					<div in:pageIn out:pageOut>
 						{@render children()}
 					</div>

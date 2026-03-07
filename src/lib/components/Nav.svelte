@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	let mobileOpen = $state(false);
 
@@ -71,7 +71,7 @@
 			{#each links as link}
 				<a
 					href={link.href}
-					class="nav-link text-xs tracking-[0.15em] uppercase {$page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
+					class="nav-link text-xs tracking-[0.15em] uppercase {page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
 				>
 					{link.label}
 				</a>
@@ -102,7 +102,7 @@
 					<a
 						href={link.href}
 						onclick={closeMobile}
-						class="py-2 text-xs tracking-[0.15em] uppercase nav-link {$page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
+						class="py-2 text-xs tracking-[0.15em] uppercase nav-link {page.url.pathname.startsWith(link.href) ? 'nav-link-active' : 'text-steel-300'}"
 					>
 						{link.label}
 					</a>
