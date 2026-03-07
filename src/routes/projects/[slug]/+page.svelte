@@ -23,7 +23,7 @@
 			url: 'https://thediscipline.org',
 			why: 'The internet has become noise. We believe digital spaces should serve the human need for reflection, growth, and genuine connection — not extract attention as a commodity.',
 			how: {
-				statement: 'Through contemplative design — immersive environments, spatial audio, and interaction models that reward depth over speed. Every element is intentional.',
+				statement: 'Through immersive environments, spatial audio, and interaction models built for depth over speed. Every element is deliberate.',
 				principles: [
 					{
 						title: 'Immersive Space',
@@ -40,7 +40,7 @@
 				]
 			},
 			what: {
-				statement: 'The Discipline is a digital sanctuary for discussion, challenge, reflection, and practice. An immersive online space where design, technology, and philosophy converge.',
+				statement: 'The Discipline is an immersive online space for discussion, challenge, reflection, and practice — where design, technology, and philosophy converge.',
 				highlights: [
 					'Contemplative discussion spaces',
 					'Immersive visual environments',
@@ -65,7 +65,7 @@
 				{
 					date: 'Q2 2026',
 					title: 'Community',
-					description: 'Discussion spaces, user profiles, and contemplative conversation tools.',
+					description: 'Discussion spaces, user profiles, and tools built for considered conversation.',
 					status: 'upcoming'
 				},
 				{
@@ -83,7 +83,7 @@
 				{
 					date: '2027',
 					title: 'Launch',
-					description: 'Public launch. A digital sanctuary, open to all who seek depth.',
+					description: 'Public launch. Open to all.',
 					status: 'upcoming',
 					highlight: true
 				}
@@ -97,47 +97,9 @@
 
 	let roadmapVisible = $state(false);
 	let roadmapEl: HTMLElement;
-	let scrollContainerEl: HTMLElement;
-	let scrollProgress = $state(0);
-	let isDragging = $state(false);
-	let sliderTrackEl: HTMLElement;
-
-	function updateScrollProgress() {
-		if (!scrollContainerEl) return;
-		const maxScroll = scrollContainerEl.scrollWidth - scrollContainerEl.clientWidth;
-		if (maxScroll <= 0) { scrollProgress = 1; return; }
-		scrollProgress = Math.min(Math.max(scrollContainerEl.scrollLeft / maxScroll, 0), 1);
-	}
-
-	function onSliderDown(e: PointerEvent) {
-		isDragging = true;
-		if (scrollContainerEl) scrollContainerEl.dataset.dragging = '';
-		(e.target as HTMLElement).setPointerCapture(e.pointerId);
-		seekToPointer(e);
-	}
-
-	function onSliderMove(e: PointerEvent) {
-		if (!isDragging) return;
-		seekToPointer(e);
-	}
-
-	function onSliderUp() {
-		isDragging = false;
-		if (scrollContainerEl) delete scrollContainerEl.dataset.dragging;
-	}
-
-	function seekToPointer(e: PointerEvent) {
-		if (!sliderTrackEl || !scrollContainerEl) return;
-		const rect = sliderTrackEl.getBoundingClientRect();
-		const ratio = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
-		const maxScroll = scrollContainerEl.scrollWidth - scrollContainerEl.clientWidth;
-		scrollContainerEl.scrollLeft = ratio * maxScroll;
-		scrollProgress = ratio;
-	}
 
 	onMount(() => {
 		if (!roadmapEl) return;
-
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
@@ -145,9 +107,8 @@
 					observer.disconnect();
 				}
 			},
-			{ threshold: 0.15 }
+			{ threshold: 0.1 }
 		);
-
 		observer.observe(roadmapEl);
 		return () => observer.disconnect();
 	});
@@ -251,71 +212,31 @@
 				Roadmap
 			</h2>
 
-			<div class="roadmap" class:roadmap-visible={roadmapVisible}>
-				<!-- Track line -->
-				<div class="roadmap-track">
-					<div class="roadmap-track-fill"></div>
-				</div>
-
-				<!-- Milestones — horizontal scroll -->
-				<div
-					class="roadmap-scroll"
-					bind:this={scrollContainerEl}
-					onscroll={updateScrollProgress}
-				>
-					<div class="roadmap-items">
-						{#each project.roadmap as milestone, i}
-							<div
-								class="roadmap-item"
-								class:roadmap-item-complete={milestone.status === 'complete'}
-								class:roadmap-item-active={milestone.status === 'active'}
-								class:roadmap-item-highlight={milestone.highlight}
-								style="--delay: {i * 0.15}s;"
-							>
-								<div class="roadmap-marker">
-									<div class="roadmap-marker-dot"></div>
-								</div>
-								<div class="roadmap-content">
-									<span class="block text-[10px] tracking-[0.2em] uppercase mb-1.5 {milestone.highlight ? 'text-gold-warm' : milestone.status === 'complete' ? 'text-steel-400' : milestone.status === 'active' ? 'text-gold-warm' : 'text-steel-500'}">
-										{milestone.date}
-									</span>
-									<h3 class="text-sm font-light tracking-[0.1em] uppercase mb-2 {milestone.highlight ? 'text-gold-warm' : milestone.status === 'complete' ? 'text-steel-300' : milestone.status === 'active' ? 'text-gold-warm' : 'text-gold-200'}">
-										{milestone.title}
-									</h3>
-									<p class="text-xs leading-relaxed font-light {milestone.highlight ? 'text-gold-warm/70' : 'text-steel-400'}">
-										{milestone.description}
-									</p>
-								</div>
-							</div>
-						{/each}
+			<div class="timeline" class:timeline-visible={roadmapVisible}>
+				{#each project.roadmap as milestone, i}
+					<div
+						class="timeline-item"
+						class:timeline-item-complete={milestone.status === 'complete'}
+						class:timeline-item-active={milestone.status === 'active'}
+						class:timeline-item-highlight={milestone.highlight}
+						style="--delay: {i * 0.12}s;"
+					>
+						<div class="timeline-marker">
+							<div class="timeline-dot"></div>
+						</div>
+						<div class="timeline-body">
+							<span class="timeline-date">
+								{milestone.date}
+							</span>
+							<h3 class="timeline-title">
+								{milestone.title}
+							</h3>
+							<p class="timeline-desc">
+								{milestone.description}
+							</p>
+						</div>
 					</div>
-				</div>
-
-				<!-- Custom slider -->
-				<div
-					class="roadmap-slider"
-					bind:this={sliderTrackEl}
-					onpointerdown={onSliderDown}
-					onpointermove={onSliderMove}
-					onpointerup={onSliderUp}
-					onpointercancel={onSliderUp}
-					role="slider"
-					aria-valuenow={Math.round(scrollProgress * 100)}
-					aria-valuemin={0}
-					aria-valuemax={100}
-					aria-label="Roadmap scroll"
-					tabindex={0}
-				>
-					<div class="roadmap-slider-track"></div>
-					<div
-						class="roadmap-slider-fill"
-						style="width: {scrollProgress * 100}%; background: color-mix(in srgb, var(--color-steel-400) {Math.round((1 - scrollProgress) * 100)}%, var(--color-gold-warm));"
-					></div>
-					<div
-						class="roadmap-slider-thumb"
-						style="left: {scrollProgress * 100}%; border-color: color-mix(in srgb, var(--color-steel-400) {Math.round((1 - scrollProgress) * 100)}%, var(--color-gold-warm));"
-					></div>
-				</div>
+				{/each}
 			</div>
 		</section>
 
@@ -349,157 +270,127 @@
 {/if}
 
 <style>
-	.roadmap {
+	/* ── Vertical timeline ── */
+	.timeline {
 		position: relative;
+		padding-left: 2rem;
 	}
 
-	/* Horizontal track line across the top */
-	.roadmap-track {
+	/* Vertical line */
+	.timeline::before {
+		content: '';
 		position: absolute;
-		top: 8px;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: var(--color-steel-500);
+		left: 3px;
+		top: 6px;
+		bottom: 6px;
+		width: 1px;
+		background: linear-gradient(to bottom, var(--color-steel-500) 0%, var(--color-gold-warm) 100%);
 		opacity: 0.2;
-		z-index: 0;
+		transition: opacity 1s ease;
 	}
 
-	.roadmap-track-fill {
-		height: 100%;
-		width: 0;
-		background: linear-gradient(to right, var(--color-steel-400), var(--color-gold-warm));
-		transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+	.timeline-visible::before {
+		opacity: 0.4;
 	}
 
-	.roadmap-visible .roadmap-track-fill {
-		width: 100%;
-	}
-
-	/* Scroll container — hides native scrollbar */
-	.roadmap-scroll {
-		overflow-x: auto;
-		overflow-y: hidden;
-		-webkit-overflow-scrolling: touch;
-		scrollbar-width: none;
+	.timeline-item {
 		position: relative;
-	}
-
-	.roadmap-scroll::-webkit-scrollbar {
-		display: none;
-	}
-
-	/* Items row — never wraps */
-	.roadmap-items {
-		display: flex;
-		gap: 2rem;
-		position: relative;
-		padding-right: 2rem;
-	}
-
-	/* Individual milestone — fixed width */
-	.roadmap-item {
-		flex: 0 0 220px;
-		padding-top: 2rem;
-		position: relative;
+		padding-bottom: 2.5rem;
 		opacity: 0;
-		transform: translateY(12px);
+		transform: translateY(10px);
 	}
 
-	.roadmap-visible .roadmap-item {
-		animation: roadmapReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	.timeline-item:last-child {
+		padding-bottom: 0;
+	}
+
+	.timeline-visible .timeline-item {
+		animation: timelineReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 		animation-delay: var(--delay);
 	}
 
-	@keyframes roadmapReveal {
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	@keyframes timelineReveal {
+		to { opacity: 1; transform: translateY(0); }
 	}
 
-	/* Marker on the track */
-	.roadmap-marker {
+	/* Diamond marker */
+	.timeline-marker {
 		position: absolute;
-		top: 2px;
-		left: 0;
-		width: 17px;
-		height: 17px;
-		transform: translate(-1px, 0);
+		left: -2rem;
+		top: 3px;
+		width: 16px;
+		height: 16px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.roadmap-marker-dot {
+	.timeline-dot {
 		width: 7px;
 		height: 7px;
 		border: 1px solid var(--color-steel-400);
-		transform: rotate(45deg) translate(2px, 2px);
-		transition: border-color 0.6s ease, background 0.6s ease, box-shadow 0.6s ease;
+		transform: rotate(45deg);
+		background: transparent;
+		transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
 	}
 
-	.roadmap-item-complete .roadmap-marker-dot {
+	.timeline-item-complete .timeline-dot {
 		border-color: var(--color-steel-400);
 		background: var(--color-steel-400);
 	}
 
-	.roadmap-item-active .roadmap-marker-dot {
+	.timeline-item-active .timeline-dot {
 		border-color: var(--color-gold-warm);
 		background: var(--color-gold-warm);
-		box-shadow: 0 0 8px rgba(212, 165, 116, 0.4);
+		box-shadow: 0 0 8px rgba(212, 165, 116, 0.5);
 	}
 
-	/* Highlighted milestone (e.g. LAUNCH) — gold with glow */
-	.roadmap-item-highlight .roadmap-marker-dot {
+	.timeline-item-highlight .timeline-dot {
 		border-color: var(--color-gold-warm);
 		background: var(--color-gold-warm);
 		box-shadow: 0 0 12px rgba(212, 165, 116, 0.6), 0 0 24px rgba(212, 165, 116, 0.2);
 	}
 
-	/* Content */
-	.roadmap-content {
-		padding-top: 0.75rem;
+	.timeline-body {
+		padding-left: 0.5rem;
 	}
 
-	/* ── Custom slider ── */
-	.roadmap-slider {
-		position: relative;
-		height: 24px;
-		margin-top: 2rem;
-		cursor: pointer;
-		touch-action: none;
-		user-select: none;
+	.timeline-date {
+		display: block;
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--color-steel-500);
+		margin-bottom: 0.3rem;
 	}
 
-	.roadmap-slider-track {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: var(--color-steel-500);
-		opacity: 0.25;
-		transform: translateY(-50%);
+	.timeline-item-active .timeline-date,
+	.timeline-item-highlight .timeline-date {
+		color: var(--color-gold-warm);
 	}
 
-	.roadmap-slider-fill {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		height: 1px;
-		transform: translateY(-50%);
+	.timeline-title {
+		font-size: 0.8rem;
+		font-weight: 300;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-gold-200);
+		margin-bottom: 0.4rem;
 	}
 
-	.roadmap-slider-thumb {
-		position: absolute;
-		top: 50%;
-		width: 9px;
-		height: 9px;
-		border: 1px solid var(--color-steel-400);
-		transform: translate(-50%, -50%) rotate(45deg);
-		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	.timeline-item-active .timeline-title,
+	.timeline-item-highlight .timeline-title {
+		color: var(--color-gold-warm);
 	}
 
-	.roadmap-slider:hover .roadmap-slider-thumb,
-	.roadmap-slider:active .roadmap-slider-thumb {
-		box-shadow: 0 0 8px rgba(212, 165, 116, 0.3);
+	.timeline-desc {
+		font-size: 0.8rem;
+		line-height: 1.6;
+		font-weight: 300;
+		color: var(--color-steel-400);
+	}
+
+	.timeline-item-highlight .timeline-desc {
+		color: rgba(212, 165, 116, 0.6);
 	}
 </style>

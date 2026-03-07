@@ -3,7 +3,7 @@
 		{
 			name: 'The Discipline',
 			slug: 'the-discipline',
-			description: 'A contemplative digital sanctuary — an immersive space for discussion, challenge, reflection, and practice. Incorporating a unique aesthetic space, spatial audio, and interaction opportunities.',
+			description: 'An immersive online space for discussion, challenge, reflection, and practice — built with spatial audio, real-time 3D environments, and interaction models designed for depth.',
 			url: 'https://thediscipline.org',
 			status: 'Active'
 		}
