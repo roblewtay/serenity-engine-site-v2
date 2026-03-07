@@ -11,7 +11,7 @@
 
 	function onBrandEnter() {
 		spinning = true;
-		speed = 3; // degrees per frame
+		speed = 0.5; // degrees per frame
 		cancelAnimationFrame(rafId);
 		animate();
 	}
@@ -24,7 +24,7 @@
 	function animate() {
 		if (spinning) {
 			// accelerate up to target speed
-			speed += (3 - speed) * 0.1;
+			speed += (0.5 - speed) * 0.1;
 		} else {
 			// decelerate
 			speed *= 0.95;
