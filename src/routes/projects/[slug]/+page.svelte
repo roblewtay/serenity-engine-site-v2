@@ -276,23 +276,6 @@
 		padding-left: 2rem;
 	}
 
-	/* Vertical line */
-	.timeline::before {
-		content: '';
-		position: absolute;
-		left: 3px;
-		top: 6px;
-		bottom: 6px;
-		width: 1px;
-		background: linear-gradient(to bottom, var(--color-steel-500) 0%, var(--color-gold-warm) 100%);
-		opacity: 0.2;
-		transition: opacity 1s ease;
-	}
-
-	.timeline-visible::before {
-		opacity: 0.4;
-	}
-
 	.timeline-item {
 		position: relative;
 		padding-bottom: 2.5rem;
@@ -302,6 +285,18 @@
 
 	.timeline-item:last-child {
 		padding-bottom: 0;
+	}
+
+	/* Line segment from diamond centre down to next diamond centre */
+	.timeline-item:not(:last-child)::before {
+		content: '';
+		position: absolute;
+		left: calc(-2rem + 7px);
+		top: 11px;
+		bottom: calc(-11px);
+		width: 1px;
+		background: color-mix(in srgb, var(--color-steel-400) 40%, transparent);
+		transition: opacity 0.6s ease;
 	}
 
 	.timeline-visible .timeline-item {
@@ -316,7 +311,7 @@
 	/* Diamond marker */
 	.timeline-marker {
 		position: absolute;
-		left: -2rem;
+		left: calc(-2rem - 1px);
 		top: 3px;
 		width: 16px;
 		height: 16px;
@@ -330,7 +325,7 @@
 		height: 7px;
 		border: 1px solid var(--color-steel-400);
 		transform: rotate(45deg);
-		background: transparent;
+		background: var(--color-void-200);
 		transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
 	}
 
