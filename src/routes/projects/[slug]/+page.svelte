@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 
 	interface Milestone {
@@ -91,7 +91,7 @@
 		}
 	};
 
-	const slug = $derived($page.params.slug);
+	const slug = $derived(page.params.slug);
 	const project = $derived(projects[slug]);
 	const title = $derived(project ? `${project.name} — Serenity Engine` : 'Project Not Found — Serenity Engine');
 
